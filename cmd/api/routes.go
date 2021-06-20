@@ -14,15 +14,17 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
 
-	router.HandlerFunc(http.MethodGet, "/v1/movies", app.requirePermission("movies:read", app.listMoviesHandler))
-	router.HandlerFunc(http.MethodPost, "/v1/movies", app.requirePermission("movies:write", app.createMovieHandler))
-	router.HandlerFunc(http.MethodGet, "/v1/movies/:id", app.requirePermission("movies:read", app.showMovieHandler))
-	router.HandlerFunc(http.MethodPatch, "/v1/movies/:id", app.requirePermission("movies:write", app.updateMovieHandler))
-	router.HandlerFunc(http.MethodDelete, "/v1/movies/:id", app.requirePermission("movies:write", app.deleteMovieHandler))
+	router.HandlerFunc(http.MethodGet, "/v1/allBots", app.requirePermission("bots:admin", app.listBotsHandler))
+
+	router.HandlerFunc(http.MethodPost, "/v1/bots", app.requirePermission("bots:write", app.createBotHandler))
+	router.HandlerFunc(http.MethodGet, "/v1/bots/:id", app.requirePermission("bots:read", app.showBotHandler))
+	router.HandlerFunc(http.MethodPatch, "/v1/bots/:id", app.requirePermission("bots:write", app.updateBotHandler))
+	router.HandlerFunc(http.MethodDelete, "/v1/bots/:id", app.requirePermission("bots:write", app.deleteBotHandler))
 
 
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPut, "/v1/users/activated", app.activateUserHandler)
+	router.HandlerFunc(http.MethodGet, "/checkToken/:token", app.checkTokenHandler)
 
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 
